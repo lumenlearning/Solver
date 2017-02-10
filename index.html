@@ -3,17 +3,21 @@
   <head>
     <meta charset="utf-8">
     <script src="bundle.js"></script>
+    <link rel="stylesheet" href="styles/styles.css">
     <title>MATH</title>
   </head>
   <body>
     <h1>MATHSTEPS</h1>
 
       <label for="equation">Equation: </label>
-      <input type="text" id="equation" name="equation">
-      <button type="button" id="solvebutton">SOLVE ME</button>
-      <button type="button" id="simplifybutton">SIMPLIFY ME</button>
+      <input type="text" id="equation" name="equation"><br>
+      <button type="button" id="solvebutton">Solve Equation</button>
+      <button type="button" id="simplifybutton">Simplify Expression</button>
 
-      <h2>Equation Steps</h2>
+      <h2>Steps</h2>
+      <button type="button" id="substepbutton">Toggle Substeps</button>
+      <br><br>
       <div id="equationsteps"></div>
+
     </body>
   </html>
