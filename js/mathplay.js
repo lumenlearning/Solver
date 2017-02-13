@@ -14,9 +14,12 @@ $(document).ready(function(){
       steps.forEach(step => {
         var changeTypeSpaced = step.changeType.replace(/_/g," ");
 
+        console.log(step.oldEquation.leftNode);
+        console.log(step.oldEquation.leftNode.fn);
+
         $("#equationsteps").append("<strong>" + (steps.indexOf(step) + 1) + ")</strong><br>");
-        $("#equationsteps").append("before change: " + changeTypeSpaced.toLowerCase() + "<br>");
-        $("#equationsteps").append("change: " + step.changeType + "<br>");
+        $("#equationsteps").append("before change: " + step.oldEquation.print() + "<br>");
+        $("#equationsteps").append("change: " + changeTypeSpaced.toLowerCase() + "<br>");
         $("#equationsteps").append("after change: " + step.newEquation.print() + "<br>");
         $("#equationsteps").append("# of substeps: " + step.substeps.length + "<br><br>");
         $("#equationsteps").append("<div class='substeps'></div>");
