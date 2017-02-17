@@ -89,16 +89,20 @@ $(document).ready(function(){
                     substep.oldEquation.leftNode.args.forEach(oldArg => {
                         if (oldArg.args) {
                             oldArg.args.forEach(oldArgNarrow => {
+                                var isChangeArg = false;
                                 newNode.args.forEach(newArg => {
                                     if (newArg.args) {
                                         newArg.args.forEach(newArgNarrow => {
                                             if (_.isEqual(oldArgNarrow, newArgNarrow) === false) {
-                                                polynomials.push(oldArgNarrow);
+                                                isChangeArg = true;
                                             }
                                         });
                                     }
 
                                 });
+                                if (isChangeArg) {
+                                    polynomials.push(oldArgNarrow);
+                                }
                             });
                         }
                     });
