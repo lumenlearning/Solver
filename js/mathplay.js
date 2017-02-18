@@ -81,10 +81,11 @@ $(document).ready(function() {
 
             step.substeps.forEach(substep => {
                 // seperate loop logic from DOM logic here
-                if (substep.changeType === 'ADD_POLYNOMIAL_TERMS') {
-                    var polynomials = [];
-                    var firstLevelChangeNodes = [];
-                    var secondLevelChangeNodes = [];
+                if (substep.changeType === 'COLLECT_AND_COMBINE_LIKE_TERMS') {
+                    var changeArguments = [];
+                    var zeroLevelSubNodes = [];
+                    var firstLevelSubNodes = [];
+                    var secondLevelSubNodes = [];
 
                     if (substep.oldEquation.leftNode.args) {
                         var newNode = substep.newEquation.leftNode;
@@ -106,32 +107,33 @@ $(document).ready(function() {
                               // console.log("Outside oldArg.args loop: " + changeLevelOne);
 
                               if (changeLevelOne) {
-                                firstLevelChangeNodes.push(oldArg);
+                                firstLevelSubNodes.push(oldArg);
                               }
 
                               else {
-                                secondLevelChangeNodes.push(oldArg);
+                                secondLevelSubNodes.push(oldArg);
                               }
                             }
 
-                            });
+                            else if (oldArg.type === "SymbolNode") {
+                              firstLevelSubNodes.push(oldArg);
+                            }
 
-                            console.log("FIRST LEVEL CHANGE: " + firstLevelChangeNodes);
-                            console.log("SECOND LEVEL CHANGE " + secondLevelChangeNodes);
+                          });
 
-                            firstLevelChangeNodes.forEach(oldArg => {
+                            console.log("FIRST LEVEL CHANGE: " + firstLevelSubNodes);
+                            console.log("SECOND LEVEL CHANGE " + secondLevelSubNodes);
+
+
+                            firstLevelSubNodes.forEach(oldArg => {
                               var isChangeArg = true;
                               newNode.args.forEach(newArg => {
-                                console.log("newArg level 1: not equal? ")
-                                console.log(!_.isEqual(oldArg, newArg));
                                 if (_.isEqual(oldArg, newArg)) {
                                   isChangeArg = false;
                                 }
 
                                 if (newArg.args) {
                                   newArg.args.forEach(newArgNarrow => {
-                                    console.log("newArgNarrow level 1: ")
-                                    console.log(_.isEqual(oldArg, newArgNarrow));
                                     if (_.isEqual(oldArg, newArgNarrow)) {
                                         isChangeArg = false;
                                     }
@@ -139,14 +141,12 @@ $(document).ready(function() {
                                 }
 
                               });
-                              console.log("change arg? ");
-                              console.log(isChangeArg);
                               if (isChangeArg) {
-                                  polynomials.push(oldArg);
+                                  changeArguments.push(oldArg);
                               }
                             });
 
-                            secondLevelChangeNodes.forEach(oldArg => {
+                            secondLevelSubNodes.forEach(oldArg => {
                               var isChangeArg = false;
                               oldArg.args.forEach(oldArgNarrow => {
                                 newNode.args.forEach(newArg => {
@@ -159,7 +159,7 @@ $(document).ready(function() {
                                     }
                                 });
                                 if (isChangeArg) {
-                                    polynomials.push(oldArgNarrow);
+                                    changeArguments.push(oldArgNarrow);
                                 }
                               });
                             });
@@ -168,13 +168,13 @@ $(document).ready(function() {
 
 
                     console.log("POLYNOMIALS");
-                    console.log("polynomials: " + polynomials);
+                    console.log("changeArguments: " + changeArguments);
                 }
                 // else {
                 //     var newNode = substep.newEquation.rightNode;
                 //     substep.oldEquation.rightNode.args.forEach(arg => {
                 //         if (isInNewNode(arg, newNode) === false) {
-                //             polynomials.push(arg);
+                //             changeArguments.push(arg);
                 //         }
                 //     });
                 // }
@@ -190,9 +190,9 @@ $(document).ready(function() {
                 // console.log("new right: " + substep.newEquation.rightNode.changeGroup);
                 var changeTypeSpacedSubstep = substep.changeType.replace(/_/g, " ");
 
-                $(".substeps").append("Start with: " + substep.oldEquation.print() + "<br>");
-                $(".substeps").append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
-                $(".substeps").append("End with: " + substep.newEquation.print() + "<br><br>");
+              $(".substeps").append("Start with: " + substep.oldEquation.print() + "<br>");
+              $(".substeps").append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
+              $(".substeps").append("End with: " + substep.newEquation.print() + "<br><br>");
             });
         });
         $("#substepbutton").show();
