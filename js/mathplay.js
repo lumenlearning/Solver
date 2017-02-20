@@ -98,7 +98,6 @@ $(document).ready(function(){
                                             }
                                         });
                                     }
-
                                 });
                                 if (isChangeArg) {
                                     polynomials.push(oldArgNarrow);
