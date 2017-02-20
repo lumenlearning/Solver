@@ -2,14 +2,120 @@ const mathsteps = require('mathsteps');
 const $ = require('jQuery');
 const _ = require('lodash');
 
-function isInNewNode(myNode, newNode) {
-    newNode.args.forEach(arg => {
-        if (_.isEqual(arg, myNode)) {
-            return true;
+// Substep explainer
+function getSubstepChanges(step,substep) {
+  if (step.changeType === "SIMPLIFY_LEFT_SIDE" || step.changeType === "SIMPLIFY_RIGHT_SIDE") {
+      var changeArguments = [];
+      var changeOperation = "";
+      var firstLevelSubNodes = [];
+      var secondLevelSubNodes = [];
+
+      if (step.changeType === "SIMPLIFY_LEFT_SIDE") {
+        var oldSideNode = substep.oldEquation.leftNode;
+        var newSideNode = substep.newEquation.leftNode;
+      }
+
+      else if (step.changeType === "SIMPLIFY_RIGHT_SIDE") {
+        var oldSideNode = substep.oldEquation.rightNode;
+        var newSideNode = substep.newEquation.rightNode;
+      }
+
+          // begin looping through arguments of left node
+      oldSideNode.args.forEach(oldArg => {
+        if (oldArg.changeGroup === 1 ) {
+          changeOperation = oldArg.fn;
         }
 
-    });
+      var changeLevelOne = false;
+        if (oldArg.args) {
+          oldArg.args.forEach(oldArgNarrow => {
+            if (oldArgNarrow.type === "ConstantNode" && oldArg.changeGroup === 1) {
+              changeLevelOne = false;
+            }
+            else if (oldArgNarrow.type !== "OperatorNode") {
+              changeLevelOne = true;
+            }
+          });
+
+          if (changeLevelOne) {
+            firstLevelSubNodes.push(oldArg);
+          }
+          else {
+            secondLevelSubNodes.push(oldArg);
+          }
+        }
+
+        else if (oldArg.type === "SymbolNode") {
+          firstLevelSubNodes.push(oldArg);
+        }
+
+        else if (oldArg.type === "ConstantNode") {
+          firstLevelSubNodes.push(oldArg);
+        }
+      });
+      console.log(oldSideNode);
+      // console.log("new node: " + newSideNode);
+      // console.log("OLD ARGS");
+      // console.log(oldSideNode.args);
+      // console.log("NEW ARGS");
+      // console.log(newSideNode.args);
+      console.log("FIRST LEVEL CHANGE: " + firstLevelSubNodes);
+      console.log("SECOND LEVEL CHANGE " + secondLevelSubNodes);
+
+      firstLevelSubNodes.forEach(oldArg => {
+        var isChangeArg = true;
+        newSideNode.args.forEach(newArg => {
+          // console.log("is equal?");
+          // console.log("old arg: " + oldArg);
+          // console.log("new arg: " + newArg);
+          // console.log(_.isEqual(oldArg, newArg));
+          // console.log(oldArg.toString() === newArg.toString());
+          if (oldArg.toString() === newArg.toString()) {
+            isChangeArg = false;
+          }
+          // if (newArg.args) {
+          //   newArg.args.forEach(newArgNarrow => {
+          //     if (oldArg.toString() === newArgNarrow.toString()) {
+          //         isChangeArg = false;
+          //     }
+          //   });
+          // }
+        });
+        if (isChangeArg) {
+            changeArguments.push(oldArg);
+        }
+      });
+
+      secondLevelSubNodes.forEach(oldArg => {
+        var isChangeArg = true;
+        oldArg.args.forEach(oldArgNarrow => {
+          newSideNode.args.forEach(newArg => {
+            if (newArg.args) {
+              newArg.args.forEach(newArgNarrow => {
+                  if ((oldArgNarrow.toString() === newArgNarrow.toString() || oldArgNarrow.toString() === newArg.toString()) && !_.includes(firstLevelSubNodes.toString(),oldArgNarrow.toString())) {
+                      isChangeArg = false;
+                  }
+              });
+            }
+          });
+          if (isChangeArg) {
+              changeArguments.push(oldArgNarrow);
+          }
+        });
+      });
+
+      if (!changeOperation) {
+        changeOperation = oldSideNode.fn;
+      }
+
+      console.log("changeArguments: " + changeArguments);
+      console.log(changeOperation);
+
+      var SubstepChanges = {changeValues: changeArguments, changeFunction: changeOperation}
+  }
+  return SubstepChanges;
 }
+
 
 
 $(document).ready(function() {
@@ -80,100 +186,11 @@ $(document).ready(function() {
 
 
             step.substeps.forEach(substep => {
-                // seperate loop logic from DOM logic here
-                if (substep.changeType === 'COLLECT_AND_COMBINE_LIKE_TERMS') {
-                    var changeArguments = [];
-                    var zeroLevelSubNodes = [];
-                    var firstLevelSubNodes = [];
-                    var secondLevelSubNodes = [];
-
-                    if (substep.oldEquation.leftNode.args) {
-                        var newNode = substep.newEquation.leftNode;
-                        // begin looping through arguments of left node
-                        substep.oldEquation.leftNode.args.forEach(oldArg => {
-                        var changeLevelOne = false;
-                            if (oldArg.args) {
-                              // if (_.includes(oldArg.args,SymbolNode)) {
-                              //   changeLevelOne === true;
-                              // }
-
-                              oldArg.args.forEach(oldArgNarrow => {
-                                if (oldArgNarrow.type !== "OperatorNode") {
-                                  changeLevelOne = true;
-                                  // console.log("Inside oldArg.args loop: " + changeLevelOne);
-                                }
-                              });
-
-                              // console.log("Outside oldArg.args loop: " + changeLevelOne);
-
-                              if (changeLevelOne) {
-                                firstLevelSubNodes.push(oldArg);
-                              }
-
-                              else {
-                                secondLevelSubNodes.push(oldArg);
-                              }
-                            }
-
-                            else if (oldArg.type === "SymbolNode") {
-                              firstLevelSubNodes.push(oldArg);
-                            }
-
-                          });
-
-                            console.log("FIRST LEVEL CHANGE: " + firstLevelSubNodes);
-                            console.log("SECOND LEVEL CHANGE " + secondLevelSubNodes);
-
-
-                            firstLevelSubNodes.forEach(oldArg => {
-                              var isChangeArg = true;
-                              newNode.args.forEach(newArg => {
-                                if (_.isEqual(oldArg, newArg)) {
-                                  isChangeArg = false;
-                                }
-
-                                if (newArg.args) {
-                                  newArg.args.forEach(newArgNarrow => {
-                                    if (_.isEqual(oldArg, newArgNarrow)) {
-                                        isChangeArg = false;
-                                    }
-                                  });
-                                }
-
-                              });
-                              if (isChangeArg) {
-                                  changeArguments.push(oldArg);
-                              }
-                            });
-
-                            secondLevelSubNodes.forEach(oldArg => {
-                              var isChangeArg = false;
-                              oldArg.args.forEach(oldArgNarrow => {
-                                newNode.args.forEach(newArg => {
-                                    if (newArg.args) {
-                                        newArg.args.forEach(newArgNarrow => {
-                                            if (!_.isEqual(oldArgNarrow, newArgNarrow) && !_.isEqual(oldArgNarrow, newArg)) {
-                                                isChangeArg = true;
-                                            }
-                                        });
-                                    }
-                                });
-                                if (isChangeArg) {
-                                    changeArguments.push(oldArgNarrow);
-                                }
-                              });
-                            });
-                          }
-
-
-
-                    console.log("POLYNOMIALS");
-                    console.log("changeArguments: " + changeArguments);
-                }
+              getSubstepChanges(step,substep);
                 // else {
-                //     var newNode = substep.newEquation.rightNode;
+                //     var newSideNode = substep.newEquation.rightNode;
                 //     substep.oldEquation.rightNode.args.forEach(arg => {
-                //         if (isInNewNode(arg, newNode) === false) {
+                //         if (isInNewNode(arg, newSideNode) === false) {
                 //             changeArguments.push(arg);
                 //         }
                 //     });
@@ -220,7 +237,7 @@ $(document).ready(function() {
             $("#equationsteps").append("<strong>" + (simplifySteps.indexOf(step) + 1) + ")</strong><br>");
             $("#equationsteps").append("before change: " + step.oldNode + "<br>");
             $("#equationsteps").append("change: " + changeTypeSpaced.toLowerCase() + "<br>");
-            $("#equationsteps").append("after change: " + step.newNode + "<br>");
+            $("#equationsteps").append("after change: " + step.newSideNode + "<br>");
             $("#equationsteps").append("# of substeps: " + step.substeps.length + "<br><br>");
             $("#equationsteps").append("<div class='substeps'></div>");
 
@@ -229,7 +246,7 @@ $(document).ready(function() {
 
                 $(".substeps").append("Start with: " + substep.oldNode + "<br>");
                 $(".substeps").append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
-                $(".substeps").append("End with: " + substep.newNode + "<br><br>");
+                $(".substeps").append("End with: " + substep.newSideNode + "<br><br>");
             });
         });
         $("#substepbutton").show();
@@ -239,7 +256,7 @@ $(document).ready(function() {
 
         var finalStep = simplifySteps[simplifySteps.length - 1];
         $('#equationsteps').append("<p><strong>Simplified Expression: </strong><span id='solution'></span></p>");
-        var stringifiedSolution = (finalStep.newNode).toString();
+        var stringifiedSolution = (finalStep.newSideNode).toString();
 
         $('#solution').append(stringifiedSolution);
         $('body').append("<script>var solutionSpan = document.getElementById('solution');MQ.StaticMath(solutionSpan);</script>");
