@@ -122,6 +122,7 @@ $(document).ready(function() {
     // Solve Equation
     $("#solvebutton").click(function(event) {
         $("#equationsteps").empty();
+        $("#substepbutton").show();
 
         var equation = $("#equation").val();
 
@@ -212,10 +213,7 @@ $(document).ready(function() {
               $(".substeps").append("End with: " + substep.newEquation.print() + "<br><br>");
             });
         });
-        $("#substepbutton").show();
-        $("#substepbutton").click(function(event) {
-            $(".substeps").toggle();
-        });
+
 
         var finalStep = steps[steps.length - 1];
         $('#equationsteps').append("<p><strong>Solution: </strong><span id='solution'></span></p>");
@@ -226,6 +224,7 @@ $(document).ready(function() {
     // Simplify Expression
     $("#simplifybutton").click(function(event) {
         $("#equationsteps").empty();
+        $("#substepbutton").show();
 
         var equation = $("#equation").val();
 
@@ -249,10 +248,7 @@ $(document).ready(function() {
                 $(".substeps").append("End with: " + substep.newSideNode + "<br><br>");
             });
         });
-        $("#substepbutton").show();
-        $("#substepbutton").click(function(event) {
-            $(".substeps").toggle();
-        });
+
 
         var finalStep = simplifySteps[simplifySteps.length - 1];
         $('#equationsteps').append("<p><strong>Simplified Expression: </strong><span id='solution'></span></p>");
@@ -260,5 +256,10 @@ $(document).ready(function() {
 
         $('#solution').append(stringifiedSolution);
         $('body').append("<script>var solutionSpan = document.getElementById('solution');MQ.StaticMath(solutionSpan);</script>");
+    });
+
+
+    $("#substepbutton").click(function(event) {
+        $(".substeps").toggle();
     });
 });
