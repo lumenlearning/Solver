@@ -1,5 +1,6 @@
 const mathsteps = require('mathsteps');
 const _ = require('lodash');
+const arrayToCommaList = require('./arrayToCommaList');
 
 // Substep explainer
 function getEquationSubstepChanges(step,substep) {
