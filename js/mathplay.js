@@ -3,6 +3,7 @@ const $ = require('jQuery');
 const getEquationStepChanges = require('./getEquationStepChanges');
 const getEquationSubstepChanges = require('./getEquationSubstepChanges');
 const describeEquationStep = require('./describeEquationStep');
+const describeSimplificationSubstep = require('./describeSimplificationSubstep');
 
 $(document).ready(function() {
     // Solve Equation
@@ -20,19 +21,28 @@ $(document).ready(function() {
 
 
       $("#equationsteps").append("<strong>" + (steps.indexOf(step) + 1) + ")</strong><br>");
-      $("#equationsteps").append(description + "<br>");
-      $("#equationsteps").append("before change: " + step.oldEquation.print() + "<br>");
-      $("#equationsteps").append("change: " + changeTypeSpaced.toLowerCase() + "<br>");
-      $("#equationsteps").append("after change: " + step.newEquation.print() + "<br>");
-      $("#equationsteps").append("<div class='substeps'></div>");
+      $("#equationsteps").append("<strong>Before change: </strong>" + step.oldEquation.print() + "<br>");
+      $("#equationsteps").append("<strong>Change: </strong>" + changeTypeSpaced.toLowerCase() + "<br>");
+      if (description) {
+        $("#equationsteps").append(description + "<br>");
+      }
+      $("#equationsteps").append("<strong>After change: </strong>" + step.newEquation.print() + "<br>");
+      if (step.substeps.length >0) {
+        $("#equationsteps").append("<div class='substeps' id='substeps" + steps.indexOf(step) + "'></div>");
+      }
 
-      if (!(step.substeps === [])) {
+      if (step.substeps.length >0) {
         step.substeps.forEach(substep => {
           // getSubstepChanges(step,substep);
+          var substepDescription = describeSimplificationSubstep(step,substep);
           var changeTypeSpacedSubstep = substep.changeType.replace(/_/g, " ");
-          $(".substeps").append("Start with: " + substep.oldEquation.print() + "<br>");
-          $(".substeps").append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
-          $(".substeps").append("End with: " + substep.newEquation.print() + "<br><br>");
+          var divId = '#substeps' + steps.indexOf(step);
+          $(divId).append("Start with: " + substep.oldEquation.print() + "<br>");
+          $(divId).append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
+          // if (substepDescription) {
+            $(divId).append("Change: " + substepDescription + "<br>");
+          // }
+          $(divId).append("End with: " + substep.newEquation.print() + "<br><br>");
         });
       }
     });
