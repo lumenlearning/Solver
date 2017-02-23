@@ -39,9 +39,9 @@ $(document).ready(function() {
           var divId = '#substeps' + steps.indexOf(step);
           $(divId).append("Start with: " + substep.oldEquation.print() + "</span><br>");
           $(divId).append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
-          // if (substepDescription) {
+          if (substepDescription) {
             $(divId).append("Change: " + substepDescription + "<br>");
-          // }
+          }
           $(divId).append("End with: " + substep.newEquation.print() + "</span><br><br>");
         });
       }

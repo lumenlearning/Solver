@@ -30,11 +30,6 @@ function getEquationStepChanges(step) {
     var newSideNode = step.newEquation.leftNode;
     changeOperation = oldSideNode.fn;
 
-    console.log("old node is " + oldSideNode);
-    console.log("new node is " + newSideNode);
-    console.log("FUNCTION: " + oldSideNode.fn);
-    console.log("CHANGE OP: " + changeOperation);
-
     oldSideNode.args.forEach(oldArg => {
       var isChangeArg = true;
 
@@ -49,8 +44,6 @@ function getEquationStepChanges(step) {
     var oldSideNode = step.oldEquation.rightNode;
     var newSideNode = step.newEquation.rightNode;
     changeOperation = oldSideNode.fn;
-
-    console.log("new node is " + newSideNode);
 
     oldSideNode.args.forEach(oldArg => {
       var isChangeArg = true;
@@ -79,8 +72,7 @@ function getEquationStepChanges(step) {
 
   }
   var StepChanges = {changeValues: changeArguments, changeFunction: changeOperation};
-  console.log("CHANGE ARGS");
-  console.log(changeArguments.toString());
+
   return StepChanges;
 }
 

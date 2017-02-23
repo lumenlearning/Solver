@@ -52,6 +52,10 @@ function getEquationSubstepChanges(step,substep) {
     else if (oldArg.type === "ConstantNode") {
       firstLevelSubNodes.push(oldArg);
     }
+
+    else if (oldArg.type === "ParenthesisNode") {
+        firstLevelSubNodes.push(oldArg);
+    }
   });
 
   console.log("FIRST LEVEL CHANGE: " + firstLevelSubNodes);

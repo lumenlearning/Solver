@@ -4,16 +4,8 @@ const arrayToCommaList = require('./arrayToCommaList');
 
 function describeEquationStep(step) {
   // console.log("FUNCTION " + StepChanges.changeFunction);
-  console.log("SUBSTEPS");
-  console.log(step.substeps);
-  console.log(step.substeps.length >0);
   var StepChanges = getEquationStepChanges(step);
   var stepDescription = "";
-
-  console.log("FUNCTION " + StepChanges.changeFunction);
-
-  console.log("CHANGE VALS");
-  console.log(StepChanges.changeValues);
 
   if (step.changeType === 'SIMPLIFY_LEFT_SIDE' || step.changeType === 'SIMPLIFY_RIGHT_SIDE') {
     if (step.substeps.length >0) {
