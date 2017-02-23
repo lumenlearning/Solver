@@ -4,10 +4,10 @@ const _ = require('lodash');
 function getEquationStepChanges(step) {
   changeArguments = [];
   changeOperation = "";
-  console.log("OLD LEFT");
-  console.log(step.oldEquation.leftNode);
-  console.log("OLD RIGHT");
-  console.log(step.oldEquation.rightNode);
+  // console.log("OLD LEFT");
+  // console.log(step.oldEquation.leftNode);
+  // console.log("OLD RIGHT");
+  // console.log(step.oldEquation.rightNode);
 
   if (step.changeType === "DIVIDE_FROM_BOTH_SIDES") {
     // console.log(step.newEquation.leftNode.args[1].toString());
