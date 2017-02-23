@@ -21,12 +21,12 @@ $(document).ready(function() {
 
 
       $("#equationsteps").append("<strong>" + (steps.indexOf(step) + 1) + ")</strong><br>");
-      $("#equationsteps").append("<strong>Before change: </strong>" + step.oldEquation.print() + "<br>");
+      $("#equationsteps").append("<strong>Before change: </strong>" + step.oldEquation.print() + "</span><br>");
       $("#equationsteps").append("<strong>Change: </strong>" + changeTypeSpaced.toLowerCase() + "<br>");
       if (description) {
         $("#equationsteps").append(description + "<br>");
       }
-      $("#equationsteps").append("<strong>After change: </strong>" + step.newEquation.print() + "<br>");
+      $("#equationsteps").append("<strong>After change: </strong>" + step.newEquation.print() + "</span><br><br>");
       if (step.substeps.length >0) {
         $("#equationsteps").append("<div class='substeps' id='substeps" + steps.indexOf(step) + "'></div>");
       }
@@ -37,12 +37,12 @@ $(document).ready(function() {
           var substepDescription = describeSimplificationSubstep(step,substep);
           var changeTypeSpacedSubstep = substep.changeType.replace(/_/g, " ");
           var divId = '#substeps' + steps.indexOf(step);
-          $(divId).append("Start with: " + substep.oldEquation.print() + "<br>");
+          $(divId).append("Start with: " + substep.oldEquation.print() + "</span><br>");
           $(divId).append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
           // if (substepDescription) {
             $(divId).append("Change: " + substepDescription + "<br>");
           // }
-          $(divId).append("End with: " + substep.newEquation.print() + "<br><br>");
+          $(divId).append("End with: " + substep.newEquation.print() + "</span><br><br>");
         });
       }
     });
@@ -50,7 +50,7 @@ $(document).ready(function() {
     var finalStep = steps[steps.length - 1];
     $('#equationsteps').append("<p><strong>Solution: </strong><span id='solution'></span></p>");
     $('#solution').append(finalStep.newEquation.print());
-    $('body').append("<script>var solutionSpan = document.getElementById('solution');MQ.StaticMath(solutionSpan);</script>");
+    $('body').append("<script>var solutionSpan = document.getElementById('solution');MQ.StaticMath(solutionSpan);");
   });
 
   // Simplify Expression
