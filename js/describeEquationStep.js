@@ -36,9 +36,11 @@ function describeEquationStep(step) {
   else if (step.changeType === "DIVIDE_FROM_BOTH_SIDES") {
     stepDescription = "Divide both sides by " + StepChanges.changeValues[0];
   }
-
   else if (step.changeType === "ADD_TO_BOTH_SIDES") {
     stepDescription = "Add " + StepChanges.changeValues[0] + " to both sides.";
+  }
+  else if (step.changeType === "SUBTRACT_FROM_BOTH_SIDES") {
+    stepDescription = "Subtract " + StepChanges.changeValues[0] + " from both sides.";
   }
   return stepDescription;
 }

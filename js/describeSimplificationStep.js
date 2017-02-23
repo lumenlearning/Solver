@@ -14,6 +14,20 @@ function describeSimplificationStep(step, largerStep) {
     stepDescription = null;
   }
 
+  else if (step.changeType === "DISTRIBUTE") {
+    var firstParenArgs = StepChanges.changeValues[0].content.args;
+    var secondParenArgs = StepChanges.changeValues[1].content.args;
+    var distributePairs = [];
+
+    firstParenArgs.forEach(firstArg => {
+      secondParenArgs.forEach(secondArg => {
+        distributePairs.push(firstArg + " * " + secondArg);
+      });
+    });
+
+    stepDescription = "Add the products of " + arrayToCommaList(distributePairs);
+  }
+
   else {
     if (StepChanges.changeFunction === "add") {
       stepDescription = "Add " + arrayToCommaList(StepChanges.changeValues);

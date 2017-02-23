@@ -98,7 +98,6 @@ function getEquationSubstepChanges(step,substep) {
   }
 
   console.log("changeArguments: " + changeArguments);
-  console.log(changeOperation);
 
   var SubstepChanges = {changeValues: changeArguments, changeFunction: changeOperation};
 

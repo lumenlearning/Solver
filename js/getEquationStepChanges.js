@@ -25,6 +25,14 @@ function getEquationStepChanges(step) {
     }
   }
 
+  else if (step.changeType === "SUBTRACT_FROM_BOTH_SIDES") {
+    // console.log(step.newEquation.leftNode.args[1].toString());
+    // console.log(step.newEquation.rightNode.args[1].toString());
+    if (step.newEquation.leftNode.args[1].toString() === step.newEquation.rightNode.args[1].toString() && step.newEquation.leftNode.fn === "subtract" && step.newEquation.rightNode.fn === "subtract") {
+      changeArguments.push(step.newEquation.leftNode.args[1].toString());
+    }
+  }
+
   else if (step.changeType === "SIMPLIFY_LEFT_SIDE") {
     var oldSideNode = step.oldEquation.leftNode;
     var newSideNode = step.newEquation.leftNode;

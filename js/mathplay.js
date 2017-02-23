@@ -52,7 +52,6 @@ $(document).ready(function() {
   // Simplify Expression
   $("#simplifybutton").click(function(event) {
     $("#equationsteps").empty();
-    $("#substepbutton").show();
 
     var equation = $("#equation").val();
 
@@ -69,24 +68,6 @@ $(document).ready(function() {
         $("#equationsteps").append(description + "<br>");
       }
       $("#equationsteps").append("<strong>After change: </strong>" + step.newNode + "</span><br><br>");
-      // if (simplifySteps.substeps.length >0) {
-      //   $("#equationsteps").append("<div class='substeps' id='substeps" + simplifySteps.indexOf(step) + "'></div>");
-      // }
-      //
-      // if (simplifySteps.substeps.length >0) {
-      //   simplifySteps.substeps.forEach(substep => {
-      //     // getSubstepChanges(step,substep);
-      //     // var substepDescription = describeSimplificationStep(step,substep);
-      //     var changeTypeSpacedSubstep = substep.changeType.replace(/_/g, " ");
-      //     var divId = '#substeps' + simplifySteps.indexOf(step);
-      //     $(divId).append("Start with: " + substep.oldNode.print() + "</span><br>");
-      //     $(divId).append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
-      //     if (substepDescription) {
-      //       $(divId).append("Change: " + substepDescription + "<br>");
-      //     }
-      //     $(divId).append("End with: " + substep.newNode.print() + "</span><br><br>");
-      //   });
-      // }
     });
 
     var finalStep = simplifySteps[simplifySteps.length - 1];
