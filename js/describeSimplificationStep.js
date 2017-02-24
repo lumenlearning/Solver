@@ -10,7 +10,7 @@ function describeSimplificationStep(step, largerStep) {
     var StepChanges = getSimplificationChanges(step);
   }
 
-  if (step.changeType === "BREAK_UP_FRACTION" || step.changeType === "COLLECT_LIKE_TERMS" || step.changeType === "REMOVE_ADDING_ZERO" ) {
+  if (step.changeType === "BREAK_UP_FRACTION" || step.changeType === "COLLECT_LIKE_TERMS" || step.changeType === "REMOVE_ADDING_ZERO" || step.changeType === "GROUP_COEFFICIENTS" ) {
     stepDescription = null;
   }
 

@@ -18,9 +18,9 @@ $(document).ready(function() {
 
       $("#equationsteps").append("<strong>" + (steps.indexOf(step) + 1) + ")</strong><br>");
       $("#equationsteps").append("<strong>Before change: </strong>" + step.oldEquation.print() + "</span><br>");
-      $("#equationsteps").append("<strong>Change: </strong>" + changeTypeSpaced.toLowerCase() + "<br>");
+      $("#equationsteps").append("<strong>Then: </strong>" + changeTypeSpaced.toLowerCase() + "<br>");
       if (description) {
-        $("#equationsteps").append(description + "<br>");
+        $("#equationsteps").append("<em>" + description + "</em><br>");
       }
       $("#equationsteps").append("<strong>After change: </strong>" + step.newEquation.print() + "</span><br><br>");
       if (step.substeps.length >0) {
@@ -36,7 +36,7 @@ $(document).ready(function() {
           $(divId).append("Start with: " + substep.oldEquation.print() + "</span><br>");
           $(divId).append("Then: " + changeTypeSpacedSubstep.toLowerCase() + "<br>");
           if (substepDescription) {
-            $(divId).append("Change: " + substepDescription + "<br>");
+            $(divId).append("<em>" + substepDescription + "</em><br>");
           }
           $(divId).append("End with: " + substep.newEquation.print() + "</span><br><br>");
         });
@@ -63,9 +63,9 @@ $(document).ready(function() {
 
       $("#equationsteps").append("<strong>" + (simplifySteps.indexOf(step) + 1) + ")</strong><br>");
       $("#equationsteps").append("<strong>Before change: </strong>" + step.oldNode + "</span><br>");
-      $("#equationsteps").append("<strong>Change: </strong>" + changeTypeSpaced.toLowerCase() + "<br>");
+      $("#equationsteps").append("<strong>Then: </strong>" + changeTypeSpaced.toLowerCase() + "<br>");
       if (description) {
-        $("#equationsteps").append(description + "<br>");
+        $("#equationsteps").append("<em>" + description + "</em><br>");
       }
       $("#equationsteps").append("<strong>After change: </strong>" + step.newNode + "</span><br><br>");
     });

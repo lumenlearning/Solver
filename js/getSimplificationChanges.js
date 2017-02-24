@@ -8,10 +8,8 @@ function getSimplificationChanges(step) {
   var changeOperation = "";
   var firstLevelSubNodes = [];
   var secondLevelSubNodes = [];
-
-
-    var oldNode = step.oldNode;
-    var newNode = step.newNode;
+  var oldNode = step.oldNode;
+  var newNode = step.newNode;
 
   // begin looping through arguments of left node
   oldNode.args.forEach(oldArg => {
